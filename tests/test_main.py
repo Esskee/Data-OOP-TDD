@@ -108,9 +108,10 @@ def test_mapping_alpha_reviews_to_c_ID_using_alpha_dictionary(data_init):
     alpha_reviews['canonical_event_id'] = alpha_reviews['alpha_event_id'].apply(lambda x: data_init.alpha_event_dictonary[x])
     assert len(alpha_reviews) == 323
 
-@pytest.mark.skip(reason="still in development")
-def test_mapping_alpha_reviews_teams_to_c_ID_using_alpha_team_dictionary():
-    test = []
+@pytest.mark.usefixtures("data_init")
+def test_mapping_alpha_reviews_teams_to_c_ID_using_alpha_team_dictionary(data_init):
+    alpha_reviews['canonical_team1_id'] = self.alpha_reviews['team1_id'].apply(lambda x: data_init.alpha_team_dictonary[x])
+    alpha_reviews['canonical_team2_id'] = self.alpha_reviews['team2_id'].apply(lambda x: data_init.alpha_team_dictonary[x])
     assert len(test) == 323
 
 @pytest.mark.skip(reason="still in development")

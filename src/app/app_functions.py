@@ -15,6 +15,8 @@ class file_handling():
         self.beta_fixtures = self.open_file_to_df('toy_data/beta_fixtures.csv')
         self.beta_market = self.open_file_to_df('toy_data/beta_market.csv')
 
+        self.alpha_event_dictonary =
+
     #importing local csv files into memory
     def open_file_to_df(self, file_name):
         file = pd.read_csv(file_name, low_memory=False)
@@ -47,3 +49,14 @@ class file_handling():
         else:
             raise ValueError(f'{map_type} is not a valid type')
         return sample
+
+    def create_canonical_dictionaries(self, map_type):
+        if map_type == 'event':
+            c_map = self.create_canonical_ID_map(map_type)
+            alpha_dict= dict(zip(c_map.alpha_event_id,c_map.canonical_event_id))
+            beta_dict= dict(zip(c_map.beta_event_id,c_map.canonical_event_id))
+        elif map_type == 'team':
+            t_map = self.create_canonical_ID_map(map_type)
+            alpha_dict= dict(zip(t_map.alpha_team_id,t_map.canonical_team_id))
+            beta_dict= dict(zip(t_map.beta_team_id,t_map.canonical_team_id))
+        return alpha_dict, beta_dict

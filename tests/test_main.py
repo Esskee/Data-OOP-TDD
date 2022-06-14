@@ -25,14 +25,15 @@ def test_all_csvs_can_be_loaded():
     file = file_handling()
     assert len(file.data) == 8
 
+def test_dict_can_be_loaded_to_df():
+    file = file_handling()
+    am = pd.DataFrame.from_dict(file.alpha_event_mappings['data'])
+    assert len(am) == 372
+
 #mapping data from def
 
-
 def test_map_alpha_event_mapping():
-    file = file_handling()
-    am = file.data['alpha_event_mappings']
-    count = am.canonical_event_id.unique()
-    assert len(count) == 372
+    pass
 
 
 def test_map_alpha_and_beta_events_by_canonical_ID():

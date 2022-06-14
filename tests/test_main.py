@@ -65,7 +65,6 @@ def test_beta_event_list_missing_c_ID(data_init):
 
 @pytest.mark.usefixtures("data_init")
 def test_alpha_and_beta_events_can_be_zipped_into_one_dict(data_init):
-    c_map = data_init.create_canonical_ID_map('event')
     test_a, test_b = data_init.create_canonical_dictionaries('event')
     assert type(test_a) is dict and type(test_b) is dict
 
@@ -90,15 +89,16 @@ def test_beta_team_list_missing_c_ID(data_init):
 
 @pytest.mark.usefixtures("data_init")
 def test_alpha_and_beta_teams_can_be_zipped_into_one_dict(data_init):
-    t_map = data_init.create_canonical_ID_map('team')
-    test_a= dict(zip(t_map.alpha_team_id,t_map.canonical_team_id))
-    test_b= dict(zip(t_map.beta_team_id,t_map.canonical_team_id))
+    test_a, test_b = data_init.create_canonical_dictionaries('team')
     assert type(test_a) is dict and type(test_b) is dict
 
-@pytest.mark.skip(reason="still in development")
-def test_mapping_alpha_totals_to_c_ID_using_alpha_dictionary():
-    test = []
-    assert len(test) == 322
+@pytest.mark.usefixtures("data_init")
+def test_mapping_alpha_totals_to_c_ID_using_alpha_dictionary(data_init):
+    c_map = data_init.create_canonical_ID_map('event')
+    alpha_list = c_map.alpha_event_id.unique()
+    alpha_totals = self.alpha_totals[self.alpha_totals['alpha_event_id'],isin(alpha_list)]
+    alpha_totals['canonical_event_id'] = alpha_totals['alpha_event_id'].apply(lambda x: data_init.alpha_event_dictonary[x])
+    assert len(alpha_totals) == 322
 
 @pytest.mark.skip(reason="still in development")
 def test_mapping_alpha_reviews_to_c_ID_using_alpha_dictionary():

@@ -28,3 +28,17 @@ class file_handling():
             df = self.open_file_to_df(v)
             dfs.append({'name': k, 'data': df})
         return dfs
+
+    def create_canonical_ID_map(self, map_type):
+        map = []
+        if map_type == 'event':
+            alpha_map = self.alpha_event_mappings
+            beta_map = self.beta_event_mappings
+            map = pd.merge(alpha_map, beta_map, how='inner', on=['canonical_event_id'])
+        elif map_type == 'team':
+            alpha_map = self.alpha_team_mappings
+            beta_map = self.beta_team_mappings
+            map = pd.merge(alpha_map, beta_map, how='inner', on=['canonical_event_id'])
+        else:
+            raise ValueError(f'{map_type} is not a valid type')
+        return map

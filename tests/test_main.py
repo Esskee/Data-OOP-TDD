@@ -40,9 +40,7 @@ def data_init():
 @pytest.mark.usefixtures("data_init")
 class data_tests:
     def test_map_alpha_and_beta_events_by_canonical_ID(data_init):
-        alpha_map = data_init.alpha_event_mappings
-        beta_map = data_init.beta_event_mappings
-        c_map = pd.merge(alpha_map, beta_map, how='inner', on=['canonical_event_id'])
+        c_map = data_init.create_canonical_ID_map('event')
         assert len(c_map) == 361
 
     def test_create_alpha_and_beta_event_C_ID_unique_lists(data_init):
@@ -69,16 +67,18 @@ class data_tests:
         test = beta_map[~beta_map.canonical_event_id.isin(test_sample)]
         assert len(test) == 33
 
-    @pytest.mark.skip(reason="still in development")
     def test_alpha_and_beta_events_can_be_zipped_into_one_dict():
-        test_a = []
-        test_b = []
+        alpha_map = data_init.alpha_event_mappings
+        beta_map = data_init.beta_event_mappings
+        c_map = pd.merge(alpha_map, beta_map, how='inner', on=['canonical_event_id'])
+        test_a= dict(zip(c_map.alpha_event_id,c_map.canonical_event_id))
+        test_b= dict(zip(c_map.beta_event_id,c_map.canonical_event_id))
         assert type(test_a) is dict and type(test_b) is dict
 
     @pytest.mark.skip(reason="still in development")
     def test_map_alpha_and_beta_teams_by_canonical_ID():
         file = file_handling()
-        alpha_map = file.alpha_event_mappings
+        alpha_map = file.alpha_team_mappings
         beta_map = file.beta_event_mappings
         c_map = pd.merge(alpha_map, beta_map, how='inner', on=['canonical_event_id'])
         assert len(c_map) == 23

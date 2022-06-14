@@ -51,7 +51,7 @@ class data_tests:
 
     def test_alpha_event_list_missing_c_ID(data_init):
         c_map = data_init.create_canonical_ID_map('event')
-        test_sample = create_canonical_ID_list(self, c_map)
+        test_sample = data_init.create_canonical_ID_list(c_map)
         test = data_init.alpha_event_mappings[~data_init.alpha_event_mappings.canonical_event_id.isin(test_sample)]
         assert len(test) == 14
 

@@ -1,5 +1,4 @@
 import pytest
-import os
 import pandas as pd
 from src.app.main import main
 from src.app.app_functions import file_handling
@@ -56,8 +55,12 @@ class data_tests:
 
     @pytest.mark.skip(reason="still in development")
     def test_alpha_event_list_missing_c_ID():
-        test = []
-        assert test == 14
+        alpha_map = data_init.alpha_event_mappings
+        beta_map = data_init.beta_event_mappings
+        c_map = pd.merge(alpha_map, beta_map, how='inner', on=['canonical_event_id'])
+        test_sample = c_map.canonical_event_id.unique()
+        test = alpha_map[~alpha_map.canonical_event_id.isin(test_sample)]
+        assert len(test) == 14
 
     @pytest.mark.skip(reason="still in development")
     def test_beta_event_list_missing_c_ID():
@@ -123,11 +126,6 @@ class data_tests:
     def test_mapping_beta_market_to_c_ID_using_beta_event_dictionary():
         test = []
         assert len(test) == 324
-
-    @pytest.mark.skip(reason="still in development - Check one")
-    def test_check_for_goal_outliers():
-        test = []
-        assert len(test) == 2
 
     @pytest.mark.skip(reason="still in development - Check one")
     def test_check_for_goal_outliers():

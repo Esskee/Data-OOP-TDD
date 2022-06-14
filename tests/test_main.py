@@ -114,8 +114,8 @@ def test_mapping_alpha_reviews_teams_to_c_ID_using_alpha_team_dictionary(data_in
     alpha_list = c_map.alpha_event_id.unique()
     alpha_reviews = data_init.alpha_reviews[data_init.alpha_reviews['alpha_event_id'].isin(alpha_list)]
     alpha_reviews['canonical_event_id'] = alpha_reviews['alpha_event_id'].apply(lambda x: data_init.alpha_event_dictonary[x])
-    alpha_reviews['canonical_team1_id'] = data_init.alpha_reviews['team1_id'].apply(lambda x: data_init.alpha_team_dictonary[x])
-    alpha_reviews['canonical_team2_id'] = data_init.alpha_reviews['team2_id'].apply(lambda x: data_init.alpha_team_dictonary[x])
+    alpha_reviews['canonical_team1_id'] = alpha_reviews['team1_id'].apply(lambda x: data_init.alpha_team_dictonary[x])
+    alpha_reviews['canonical_team2_id'] = alpha_reviews['team2_id'].apply(lambda x: data_init.alpha_team_dictonary[x])
     assert len(alpha_reviews) == 323
 
 @pytest.mark.usefixtures("data_init")
@@ -144,10 +144,18 @@ def test_mapping_beta_market_to_c_ID_using_beta_event_dictionary(data_init):
     beta_market['canonical_event_id'] = beta_market['beta_event_id'].apply(lambda x: data_init.beta_event_dictonary[x])
     assert len(beta_market) == 324
 
-@pytest.mark.skip(reason="still in development - Check one")
-def test_check_for_goal_outliers():
-    test = []
-    assert len(test) == 2
+@pytest.mark.usefixtures("data_init")
+def test_check_for_goal_outliers(data_init):
+    c_map = data_init.create_canonical_ID_map('event')
+    alpha_list = c_map.alpha_event_id.unique()
+    alpha_totals = data_init.alpha_totals[data_init.alpha_totals['alpha_event_id'].isin(alpha_list)]
+    alpha_totals['canonical_event_id'] = alpha_totals['alpha_event_id'].apply(lambda x: data_init.alpha_event_dictonary[x])
+
+    alpha_totals.isna().sum()
+    missing_goals = alpha_totals.dropna(subset=['team1_goals','team2_goals'])
+    missing_goals = missing_goals.canonical_event_id.unique()
+    missing_goals = alpha_totals[~alpha_totals['canonical_event_id'].isin(missing_goals)]
+    assert len(missing_goals) == 2
 
 @pytest.mark.skip(reason="still in development - Check two")
 def test_check_for_kickoff_time_outliers():

@@ -181,8 +181,24 @@ def test_check_for_kickoff_time_outliers(data_init):
 
     assert len(kickoff[kickoff['check']==1]) == 18
 
-@pytest.mark.skip(reason="still in development - Check three")
-def test_check_for_jackpot_potential():
-    test = []
-    assert len(test) == 2
+@pytest.mark.usefixtures("data_init")
+def test_check_for_jackpot_potential(data_init):
+    #Check to see if any matches had significant odds difference, and then check to see if one team won.
+    c_map = data_init.create_canonical_ID_map('event')
+
+    beta_list = c_map.beta_event_id.unique()
+    beta_market = data_init.beta_market[data_init.beta_market['beta_event_id'].isin(beta_list)]
+    beta_market['canonical_event_id'] = beta_market['beta_event_id'].apply(lambda x: data_init.beta_event_dictionary[x])
+
+    beta_fixtures = data_init.beta_fixtures[data_init.beta_fixtures['beta_event_id'].isin(beta_list)]
+    beta_fixtures['canonical_event_id'] = beta_fixtures['beta_event_id'].apply(lambda x: data_init.beta_event_dictionary[x])
+    beta_fixtures['canonical_team1_id'] = beta_fixtures['team1_id'].apply(lambda x: data_init.beta_team_dictionary[x])
+    beta_fixtures['canonical_team2_id'] = beta_fixtures['team2_id'].apply(lambda x: data_init.beta_team_dictionary[x])
+
+    odds_check = pd.merge(beta_market,beta_fixtures,how='inner',on=['canonical_event_id'])
+    odds_check = odds_check[['canonical_event_id','feature_a','feature_b', 'team1_goals', 'team2_goals']]
+
+    odds_check['jackpot'] = odds_check.apply(lambda x: advanced_checks.jackpot_checker(x.feature_a, x.feature_b, x.team1_goals, x.team2_goals), axis=1)
+    odds_check = odds_check[odds_check.jackpot == 1]
+    assert len(odds_check) == 2
 #

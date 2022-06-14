@@ -69,3 +69,11 @@ class advanced_checks():
         if time_1 != time_2:
             check = 1
         return check
+
+    def jackpot_checker(odds_A, odds_B, score_A, score_B):
+        jackpot = 0
+        goal_diff = abs(score_A - score_B)
+        odds_diff = abs(odds_A - odds_B)
+        if odds_diff >= 3 and goal_diff >= 1:
+            jackpot = 1
+        return jackpot

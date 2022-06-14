@@ -53,7 +53,6 @@ class data_tests:
         beta_list = c_map.beta_event_id.unique()
         assert len(alpha_list) == 358 and len(beta_list) == 361
 
-    @pytest.mark.skip(reason="still in development")
     def test_alpha_event_list_missing_c_ID():
         alpha_map = data_init.alpha_event_mappings
         beta_map = data_init.beta_event_mappings

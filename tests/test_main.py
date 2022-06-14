@@ -56,32 +56,26 @@ class data_tests:
         assert len(test) == 14
 
     def test_beta_event_list_missing_c_ID(data_init):
-        alpha_map = data_init.alpha_event_mappings
-        beta_map = data_init.beta_event_mappings
-        c_map = pd.merge(alpha_map, beta_map, how='inner', on=['canonical_event_id'])
-        test_sample = c_map.canonical_event_id.unique()
-        test = beta_map[~beta_map.canonical_event_id.isin(test_sample)]
+        c_map = data_init.create_canonical_ID_map('event')
+        test_sample = data_init.create_canonical_ID_list(c_map)
+        test = data_init.beta_event_mappings[~data_init.beta_event_mappings.canonical_event_id.isin(test_sample)]
         assert len(test) == 33
 
     def test_alpha_and_beta_events_can_be_zipped_into_one_dict(data_init):
-        alpha_map = data_init.alpha_event_mappings
-        beta_map = data_init.beta_event_mappings
-        c_map = pd.merge(alpha_map, beta_map, how='inner', on=['canonical_event_id'])
+        c_map = data_init.create_canonical_ID_map('event')
+        test_sample = data_init.create_canonical_ID_list(c_map)
         test_a= dict(zip(c_map.alpha_event_id,c_map.canonical_event_id))
         test_b= dict(zip(c_map.beta_event_id,c_map.canonical_event_id))
         assert type(test_a) is dict and type(test_b) is dict
 
-    @pytest.mark.skip(reason="still in development")
     def test_map_alpha_and_beta_teams_by_canonical_ID(data_init):
-        file = file_handling()
-        alpha_map = file.alpha_team_mappings
-        beta_map = file.beta_event_mappings
-        c_map = pd.merge(alpha_map, beta_map, how='inner', on=['canonical_event_id'])
-        assert len(c_map) == 23
+        t_map = data_init.create_canonical_ID_map('team')
+        assert len(t_map) == 23
 
-    @pytest.mark.skip(reason="still in development")
     def test_alpha_team_list_missing_c_ID():
-        test = []
+        t_map = data_init.create_canonical_ID_map('team')
+        test_sample = data_init.create_canonical_ID_list(t_map)
+        test = data_init.beta_team_mappings[~data_init.beta_team_mappings.canonical_event_id.isin(test_sample)]
         assert test == 34
 
     @pytest.mark.skip(reason="still in development")

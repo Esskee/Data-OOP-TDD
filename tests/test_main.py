@@ -1,5 +1,6 @@
 import pytest
 import os
+import pandas as pd
 from src.app.main import main
 from src.app.app_functions import file_handling
 

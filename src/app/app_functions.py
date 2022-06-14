@@ -39,6 +39,11 @@ class file_handling():
             raise ValueError(f'{map_type} is not a valid type')
         return map
 
-    def create_canonical_ID_list(self, map):
-        sample = map.canonical_event_id.unique()
+    def create_canonical_ID_list(self, map, map_type):
+        if map_type == 'event':
+            sample = map.canonical_event_id.unique()
+        elif map_type == 'team':
+            sample = map.canonical_team_id.unique()
+        else:
+            raise ValueError(f'{map_type} is not a valid type')
         return sample

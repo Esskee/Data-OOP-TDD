@@ -100,7 +100,7 @@ def test_mapping_alpha_totals_to_c_ID_using_alpha_dictionary():
     assert len(test) == 322
 
 @pytest.mark.skip(reason="still in development")
-    def test_mapping_alpha_reviews_to_c_ID_using_alpha_dictionary():
+def test_mapping_alpha_reviews_to_c_ID_using_alpha_dictionary():
     test = []
     assert len(test) == 323
 

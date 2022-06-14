@@ -80,13 +80,15 @@ def test_map_alpha_and_beta_teams_by_canonical_ID(data_init):
 def test_alpha_team_list_missing_c_ID(data_init):
     t_map = data_init.create_canonical_ID_map('team')
     test_sample = data_init.create_canonical_ID_list(t_map)
-    test = data_init.beta_team_mappings[~data_init.beta_team_mappings.canonical_event_id.isin(test_sample)]
-    assert test == 34
+    test = data_init.alpha_team_mappings[~data_init.alpha_team_mappings.canonical_event_id.isin(test_sample)]
+    assert len(test) == 34
 
-@pytest.mark.skip(reason="still in development")
-def test_beta_team_list_missing_c_ID():
-    test = []
-    assert test == 42
+@pytest.mark.usefixtures("data_init")
+def test_beta_team_list_missing_c_ID(data_init):
+    t_map = data_init.create_canonical_ID_map('team')
+    test_sample = data_init.create_canonical_ID_list(t_map)
+    test = data_init.beta_team_mappings[~data_init.beta_team_mappings.canonical_event_id.isin(test_sample)]
+    assert len(test) == 42
 
 @pytest.mark.skip(reason="still in development")
 def test_alpha_and_beta_teams_can_be_zipped_into_one_dict():

@@ -26,16 +26,22 @@ def test_all_csvs_can_be_loaded():
     file = file_handling()
     assert len(file.data) == 8
 
+
 def test_dict_can_be_loaded_to_df():
     file = file_handling()
-    am = pd.DataFrame.from_dict(file.alpha_event_mappings['data'])
-    assert len(am) == 372
+    alpha_map = file.alpha_event_mappings
+    assert len(alpha_map) == 372
 
 #mapping data from def
 
+
 def test_map_alpha_and_beta_events_by_canonical_ID():
     file = file_handling()
-    alpha_map = pd.DataFrame.from_dict(file.alpha_event_mappings['data'])
-    beta_map = pd.DataFrame.from_dict(file.beta_event_mappings['data'])
-    c_map =  pd.merge(alpha_map,beta_map,how='inner',on=['canonical_event_id'])
+    alpha_map = file.alpha_event_mappings
+    beta_map = file.beta_event_mappings
+    c_map = pd.merge(alpha_map, beta_map, how='inner', on=['canonical_event_id'])
     assert len(c_map) == 361
+
+# def test_create_alpha_and_beta__C_ID_unique_lists():
+#     file = file_handling()
+#

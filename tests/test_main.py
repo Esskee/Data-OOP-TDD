@@ -126,12 +126,15 @@ def test_mapping_beta_fixtures_to_c_ID_using_beta_event_dictionary(data_init):
 def test_mapping_beta_teams_fixtures_to_c_ID_using_beta_team_dictionary(data_init):
     beta_fixtures['canonical_team1_id'] = data_init.beta_fixtures['team1_id'].apply(lambda x: data_init.beta_team_dictonary[x])
     beta_fixtures['canonical_team2_id'] = data_init.beta_fixtures['team2_id'].apply(lambda x: data_init.beta_team_dictonary[x])
-    assert len(test) == 325
+    assert len(beta_fixtures) == 325
 
-@pytest.mark.skip(reason="still in development - Check one")
+@pytest.mark.usefixtures("data_init")
 def test_mapping_beta_market_to_c_ID_using_beta_event_dictionary(data_init):
-    test = []
-    assert len(test) == 324
+    c_map = data_init.create_canonical_ID_map('event')
+    beta_list = c_map.beta_event_id.unique()
+    beta_market = data_init.beta_market[data_init.beta_market['beta_event_id'].isin(beta_list)]
+    beta_market['canonical_event_id'] = beta_market['beta_event_id'].apply(lambda x: data_init.beta_event_dictonary[x])
+    assert len(beta_market) == 324
 
 @pytest.mark.skip(reason="still in development - Check one")
 def test_check_for_goal_outliers():

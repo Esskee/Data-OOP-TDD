@@ -110,8 +110,8 @@ def test_mapping_alpha_reviews_to_c_ID_using_alpha_dictionary(data_init):
 
 @pytest.mark.usefixtures("data_init")
 def test_mapping_alpha_reviews_teams_to_c_ID_using_alpha_team_dictionary(data_init):
-    alpha_reviews['canonical_team1_id'] = self.alpha_reviews['team1_id'].apply(lambda x: data_init.alpha_team_dictonary[x])
-    alpha_reviews['canonical_team2_id'] = self.alpha_reviews['team2_id'].apply(lambda x: data_init.alpha_team_dictonary[x])
+    alpha_reviews['canonical_team1_id'] = data_init.alpha_reviews['team1_id'].apply(lambda x: data_init.alpha_team_dictonary[x])
+    alpha_reviews['canonical_team2_id'] = data_init.alpha_reviews['team2_id'].apply(lambda x: data_init.alpha_team_dictonary[x])
     assert len(alpha_reviews) == 323
 
 @pytest.mark.usefixtures("data_init")
@@ -122,13 +122,14 @@ def test_mapping_beta_fixtures_to_c_ID_using_beta_event_dictionary(data_init):
     beta_fixtures['canonical_event_id'] = beta_fixtures['beta_event_id'].apply(lambda x: data_init.beta_event_dictonary[x])
     assert len(beta_fixtures) == 325
 
-@pytest.mark.skip(reason="still in development")
-def test_mapping_beta_teams_fixtures_to_c_ID_using_beta_team_dictionary():
-    test = []
+@pytest.mark.usefixtures("data_init")
+def test_mapping_beta_teams_fixtures_to_c_ID_using_beta_team_dictionary(data_init):
+    beta_fixtures['canonical_team1_id'] = data_init.beta_fixtures['team1_id'].apply(lambda x: data_init.beta_team_dictonary[x])
+    beta_fixtures['canonical_team2_id'] = data_init.beta_fixtures['team2_id'].apply(lambda x: data_init.beta_team_dictonary[x])
     assert len(test) == 325
 
-@pytest.mark.skip(reason="still in development")
-def test_mapping_beta_market_to_c_ID_using_beta_event_dictionary():
+@pytest.mark.skip(reason="still in development - Check one")
+def test_mapping_beta_market_to_c_ID_using_beta_event_dictionary(data_init):
     test = []
     assert len(test) == 324
 

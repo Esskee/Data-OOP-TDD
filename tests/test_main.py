@@ -26,15 +26,19 @@ def test_all_csvs_can_be_loaded():
     assert len(file.data) == 8
 
 #mapping data from def
+
+
 @pytest.fixture
 def load_in_data():
     data = file_handling()
     return data
 
+
 def test_map_alpha_event_mapping(load_in_data):
-    am = load_in_data.data.data['alpha_event_mappings']
+    am = load_in_data.data['alpha_event_mappings']
     count = am.canonical_event_id.unique()
     assert len(count) == 372
+
 
 def test_map_alpha_and_beta_events_by_canonical_ID():
     pass

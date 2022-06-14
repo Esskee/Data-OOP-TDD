@@ -44,22 +44,18 @@ class data_tests:
         assert len(c_map) == 361
 
     def test_create_alpha_and_beta_event_C_ID_unique_lists(data_init):
-        alpha_map = data_init.alpha_event_mappings
-        beta_map = data_init.beta_event_mappings
-        c_map = pd.merge(alpha_map, beta_map, how='inner', on=['canonical_event_id'])
+        c_map = data_init.create_canonical_ID_map('event')
         alpha_list = c_map.alpha_event_id.unique()
         beta_list = c_map.beta_event_id.unique()
         assert len(alpha_list) == 358 and len(beta_list) == 361
 
-    def test_alpha_event_list_missing_c_ID():
-        alpha_map = data_init.alpha_event_mappings
-        beta_map = data_init.beta_event_mappings
-        c_map = pd.merge(alpha_map, beta_map, how='inner', on=['canonical_event_id'])
-        test_sample = c_map.canonical_event_id.unique()
-        test = alpha_map[~alpha_map.canonical_event_id.isin(test_sample)]
+    def test_alpha_event_list_missing_c_ID(data_init):
+        c_map = data_init.create_canonical_ID_map('event')
+        test_sample = create_canonical_ID_list(self, c_map)
+        test = data_init.alpha_event_mappings[~data_init.alpha_event_mappings.canonical_event_id.isin(test_sample)]
         assert len(test) == 14
 
-    def test_beta_event_list_missing_c_ID():
+    def test_beta_event_list_missing_c_ID(data_init):
         alpha_map = data_init.alpha_event_mappings
         beta_map = data_init.beta_event_mappings
         c_map = pd.merge(alpha_map, beta_map, how='inner', on=['canonical_event_id'])
@@ -67,7 +63,7 @@ class data_tests:
         test = beta_map[~beta_map.canonical_event_id.isin(test_sample)]
         assert len(test) == 33
 
-    def test_alpha_and_beta_events_can_be_zipped_into_one_dict():
+    def test_alpha_and_beta_events_can_be_zipped_into_one_dict(data_init):
         alpha_map = data_init.alpha_event_mappings
         beta_map = data_init.beta_event_mappings
         c_map = pd.merge(alpha_map, beta_map, how='inner', on=['canonical_event_id'])
@@ -76,7 +72,7 @@ class data_tests:
         assert type(test_a) is dict and type(test_b) is dict
 
     @pytest.mark.skip(reason="still in development")
-    def test_map_alpha_and_beta_teams_by_canonical_ID():
+    def test_map_alpha_and_beta_teams_by_canonical_ID(data_init):
         file = file_handling()
         alpha_map = file.alpha_team_mappings
         beta_map = file.beta_event_mappings

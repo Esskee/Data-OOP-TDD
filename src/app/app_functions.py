@@ -32,13 +32,13 @@ class file_handling():
     def create_canonical_ID_map(self, map_type):
         map = []
         if map_type == 'event':
-            alpha_map = self.alpha_event_mappings
-            beta_map = self.beta_event_mappings
-            map = pd.merge(alpha_map, beta_map, how='inner', on=['canonical_event_id'])
+            map = pd.merge(self.alpha_event_mappings, self.beta_event_mappings, how='inner', on=['canonical_event_id'])
         elif map_type == 'team':
-            alpha_map = self.alpha_team_mappings
-            beta_map = self.beta_team_mappings
-            map = pd.merge(alpha_map, beta_map, how='inner', on=['canonical_event_id'])
+            map = pd.merge(self.alpha_team_mappings, self.beta_team_mappings, how='inner', on=['canonical_event_id'])
         else:
             raise ValueError(f'{map_type} is not a valid type')
         return map
+
+    def create_canonical_ID_list(self, map):
+        sample = map.canonical_event_id.unique()
+        return sample

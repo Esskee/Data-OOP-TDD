@@ -61,10 +61,13 @@ class data_tests:
         test = alpha_map[~alpha_map.canonical_event_id.isin(test_sample)]
         assert len(test) == 14
 
-    @pytest.mark.skip(reason="still in development")
     def test_beta_event_list_missing_c_ID():
-        test = []
-        assert test == 33
+        alpha_map = data_init.alpha_event_mappings
+        beta_map = data_init.beta_event_mappings
+        c_map = pd.merge(alpha_map, beta_map, how='inner', on=['canonical_event_id'])
+        test_sample = c_map.canonical_event_id.unique()
+        test = beta_map[~beta_map.canonical_event_id.isin(test_sample)]
+        assert len(test) == 33
 
     @pytest.mark.skip(reason="still in development")
     def test_alpha_and_beta_events_can_be_zipped_into_one_dict():

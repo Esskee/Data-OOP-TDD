@@ -90,10 +90,12 @@ def test_beta_team_list_missing_c_ID(data_init):
     test = data_init.beta_team_mappings[~data_init.beta_team_mappings.canonical_team_id.isin(test_sample)]
     assert len(test) == 42
 
-@pytest.mark.skip(reason="still in development")
-def test_alpha_and_beta_teams_can_be_zipped_into_one_dict():
-    test_a = []
-    test_b = []
+@pytest.mark.usefixtures("data_init")
+def test_alpha_and_beta_teams_can_be_zipped_into_one_dict(data_init):
+    t_map = data_init.create_canonical_ID_map('team')
+    test_sample = data_init.create_canonical_ID_list(t_map)
+    test_a= dict(zip(t_map.alpha_team_id,t_map.canonical_team_id))
+    test_b= dict(zip(t_map.beta_team_id,t_map.canonical_team_id))
     assert type(test_a) is dict and type(test_b) is dict
 
 @pytest.mark.skip(reason="still in development")

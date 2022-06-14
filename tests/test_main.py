@@ -144,6 +144,7 @@ def test_mapping_beta_market_to_c_ID_using_beta_event_dictionary(data_init):
     beta_market['canonical_event_id'] = beta_market['beta_event_id'].apply(lambda x: data_init.beta_event_dictionary[x])
     assert len(beta_market) == 324
 
+#check 2: Outliers in goal data
 @pytest.mark.usefixtures("data_init")
 def test_check_for_goal_outliers(data_init):
     c_map = data_init.create_canonical_ID_map('event')
@@ -157,6 +158,7 @@ def test_check_for_goal_outliers(data_init):
     missing_goals = alpha_totals[~alpha_totals['canonical_event_id'].isin(missing_goals)]
     assert len(missing_goals) == 2
 
+#Check 3: Comparing kickoff time between alpha and beta data
 @pytest.mark.usefixtures("data_init")
 def test_check_for_kickoff_time_outliers(data_init):
     #checking kickoff times across alpha and beta records and identifying inconsistancies
@@ -181,6 +183,7 @@ def test_check_for_kickoff_time_outliers(data_init):
 
     assert len(kickoff[kickoff['check']==1]) == 18
 
+#A check of my choice
 @pytest.mark.usefixtures("data_init")
 def test_check_for_jackpot_potential(data_init):
     #Check to see if any matches had significant odds difference, and then check to see if one team won.

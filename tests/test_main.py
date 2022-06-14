@@ -22,8 +22,8 @@ def test_if_csv_is_loaded_into_df():
 
 
 def test_if_all_csvs_can_be_loaded():
-    files = ['toy_data/alpha_event_mappings.csv', 'toy_data/beta_event_mappings.csv', 'toy_data\alpha_reviews.csv', 'toy_data\alpha_team_mappings.csv',
-             'toy_data\alpha_totals.csv', 'toy_data\beta_fixtures.csv', 'toy_data\beta_market.csv', 'toy_data\beta_team_mappings.csv']
+    files = ['toy_data/alpha_event_mappings.csv', 'toy_data/beta_event_mappings.csv', 'toy_data/alpha_reviews.csv', 'toy_data/alpha_team_mappings.csv',
+             'toy_data/alpha_totals.csv', 'toy_data/beta_fixtures.csv', 'toy_data/beta_market.csv', 'toy_data/beta_team_mappings.csv']
     file = file_handling()
     for i in files:
         file.open_file_to_df(i)

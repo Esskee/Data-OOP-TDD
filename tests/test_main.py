@@ -132,8 +132,8 @@ def test_mapping_beta_teams_fixtures_to_c_ID_using_beta_team_dictionary(data_ini
     beta_list = c_map.beta_event_id.unique()
     beta_fixtures = data_init.beta_fixtures[data_init.beta_fixtures['beta_event_id'].isin(beta_list)]
     beta_fixtures['canonical_event_id'] = beta_fixtures['beta_event_id'].apply(lambda x: data_init.beta_event_dictionary[x])
-    beta_fixtures['canonical_team1_id'] = beta_fixtures['team1_id'].apply(lambda x: data_init.beta_event_dictionary[x])
-    beta_fixtures['canonical_team2_id'] = beta_fixtures['team2_id'].apply(lambda x: data_init.beta_event_dictionary[x])
+    beta_fixtures['canonical_team1_id'] = beta_fixtures['team1_id'].apply(lambda x: data_init.beta_team_dictionary[x])
+    beta_fixtures['canonical_team2_id'] = beta_fixtures['team2_id'].apply(lambda x: data_init.beta_team_dictionary[x])
     assert len(beta_fixtures) == 325
 
 @pytest.mark.usefixtures("data_init")

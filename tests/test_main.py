@@ -83,6 +83,8 @@ def test_beta_team_list_missing_c_ID():
 
 @pytest.mark.skip(reason="still in development")
 def test_alpha_and_beta_teams_can_be_zipped_into_one_dict():
+    test_a = []
+    test_b = []
     assert type(test_a) is dict and type(test_b) is dict
 
 @pytest.mark.skip(reason="still in development")

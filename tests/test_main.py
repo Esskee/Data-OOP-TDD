@@ -33,9 +33,9 @@ def test_dict_can_be_loaded_to_df():
 
 #mapping data from def
 
-def test_map_alpha_event_mapping():
-    pass
-
-
 def test_map_alpha_and_beta_events_by_canonical_ID():
-    pass
+    file = file_handling()
+    alpha_map = pd.DataFrame.from_dict(file.alpha_event_mappings['data'])
+    beta_map = pd.DataFrame.from_dict(file.beta_event_mappings['data'])
+    c_map =  pd.merge(alpha_map,beta_map,how='inner',on=['canonical_event_id'])
+    assert len(c_map) == 361

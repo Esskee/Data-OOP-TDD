@@ -1,6 +1,4 @@
 '''adding a main command as a placeholder'''
-from app_functions import file_handling
-
 
 def main():
     pass

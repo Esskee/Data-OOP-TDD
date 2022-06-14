@@ -46,11 +46,13 @@ class data_tests:
         c_map = pd.merge(alpha_map, beta_map, how='inner', on=['canonical_event_id'])
         assert len(c_map) == 361
 
-    @pytest.mark.skip(reason="still in development")
-    def test_create_alpha_and_beta_event_C_ID_unique_lists():
-        alpha_list = []
-        beta_list = []
-        assert alpha_list == 358 and beta_list == 361
+    def test_create_alpha_and_beta_event_C_ID_unique_lists(data_init):
+        alpha_map = data_init.alpha_event_mappings
+        beta_map = data_init.beta_event_mappings
+        c_map = pd.merge(alpha_map, beta_map, how='inner', on=['canonical_event_id'])
+        alpha_list = c_map.alpha_event_id.unique()
+        beta_list = c_map.beta_event_id.unique()
+        assert len(alpha_list) == 358 and len(beta_list) == 361
 
     @pytest.mark.skip(reason="still in development")
     def test_alpha_event_list_missing_c_ID():

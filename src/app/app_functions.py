@@ -34,7 +34,7 @@ class file_handling():
         if map_type == 'event':
             map = pd.merge(self.alpha_event_mappings, self.beta_event_mappings, how='inner', on=['canonical_event_id'])
         elif map_type == 'team':
-            map = pd.merge(self.alpha_team_mappings, self.beta_team_mappings, how='inner', on=['canonical_event_id'])
+            map = pd.merge(self.alpha_team_mappings, self.beta_team_mappings, how='inner', on=['canonical_team_id'])
         else:
             raise ValueError(f'{map_type} is not a valid type')
         return map

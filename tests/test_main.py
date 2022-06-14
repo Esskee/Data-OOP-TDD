@@ -21,10 +21,15 @@ def test_if_csv_is_loaded_into_df():
     assert file is not None
 
 
-def test_if_all_csvs_can_be_loaded():
-    files = ['toy_data/alpha_event_mappings.csv', 'toy_data/beta_event_mappings.csv', 'toy_data/alpha_reviews.csv', 'toy_data/alpha_team_mappings.csv',
-             'toy_data/alpha_totals.csv', 'toy_data/beta_fixtures.csv', 'toy_data/beta_market.csv', 'toy_data/beta_team_mappings.csv']
+def test_all_csvs_can_be_loaded():
     file = file_handling()
-    for i in files:
-        file.open_file_to_df(i)
-    assert len(files) == 8
+    assert len(file.data) == 8
+
+# #mapping data from def
+# @pytest.fixture
+# def test_map_alpha_event_mapping():
+#     file['alpha_event_mappings']
+#
+#
+# def test_map_alpha_and_beta_events_by_canonical_ID():
+#     pass

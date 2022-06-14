@@ -1,7 +1,7 @@
 import pytest
 import pandas as pd
 from src.app.main import main
-from src.app.app_functions import file_handling
+from src.app.app_functions import file_handling, advanced_checks
 
 
 def test_main() -> None:
@@ -157,10 +157,29 @@ def test_check_for_goal_outliers(data_init):
     missing_goals = alpha_totals[~alpha_totals['canonical_event_id'].isin(missing_goals)]
     assert len(missing_goals) == 2
 
-@pytest.mark.skip(reason="still in development - Check two")
-def test_check_for_kickoff_time_outliers():
-    test = []
-    assert len(test) == 0
+@pytest.mark.usefixtures("data_init")
+def test_check_for_kickoff_time_outliers(data_init):
+    #checking kickoff times across alpha and beta records and identifying inconsistancies
+    c_map = data_init.create_canonical_ID_map('event')
+
+    alpha_list = c_map.alpha_event_id.unique()
+    alpha_reviews = data_init.alpha_reviews[data_init.alpha_reviews['alpha_event_id'].isin(alpha_list)]
+    alpha_reviews['canonical_event_id'] = alpha_reviews['alpha_event_id'].apply(lambda x: data_init.alpha_event_dictonary[x])
+    alpha_reviews['canonical_team1_id'] = alpha_reviews['team1_id'].apply(lambda x: data_init.alpha_team_dictonary[x])
+    alpha_reviews['canonical_team2_id'] = alpha_reviews['team2_id'].apply(lambda x: data_init.alpha_team_dictonary[x])
+
+    beta_list = c_map.beta_event_id.unique()
+    beta_fixtures = data_init.beta_fixtures[data_init.beta_fixtures['beta_event_id'].isin(beta_list)]
+    beta_fixtures['canonical_event_id'] = beta_fixtures['beta_event_id'].apply(lambda x: data_init.beta_event_dictionary[x])
+    beta_fixtures['canonical_team1_id'] = beta_fixtures['team1_id'].apply(lambda x: data_init.beta_team_dictionary[x])
+    beta_fixtures['canonical_team2_id'] = beta_fixtures['team2_id'].apply(lambda x: data_init.beta_team_dictionary[x])
+
+    kickoff = pd.merge(alpha_reviews, beta_fixtures, how='inner', on=['canonical_event_id'])
+    kickoff = kickoff[['canonical_event_id','kick_off_x','kick_off_y']]
+
+    kickoff['check'] = kickoff.apply(lambda x: advanced_checks.kickoff_check(x.kick_off_x,x.kick_off_y), axis=1)
+
+    assert len(kickoff[kickoff['check']==1]) == 18
 
 @pytest.mark.skip(reason="still in development - Check three")
 def test_check_for_jackpot_potential():

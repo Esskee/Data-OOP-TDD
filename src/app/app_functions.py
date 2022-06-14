@@ -61,3 +61,11 @@ class file_handling():
             alpha_dict= dict(zip(t_map.alpha_team_id,t_map.canonical_team_id))
             beta_dict= dict(zip(t_map.beta_team_id,t_map.canonical_team_id))
         return alpha_dict, beta_dict
+
+class advanced_checks():
+
+    def kickoff_check(time_1, time_2):
+        check = 0
+        if time_1 != time_2:
+            check = 1
+        return check

@@ -110,6 +110,10 @@ def test_mapping_alpha_reviews_to_c_ID_using_alpha_dictionary(data_init):
 
 @pytest.mark.usefixtures("data_init")
 def test_mapping_alpha_reviews_teams_to_c_ID_using_alpha_team_dictionary(data_init):
+    c_map = data_init.create_canonical_ID_map('event')
+    alpha_list = c_map.alpha_event_id.unique()
+    alpha_reviews = data_init.alpha_reviews[data_init.alpha_reviews['alpha_event_id'].isin(alpha_list)]
+    alpha_reviews['canonical_event_id'] = alpha_reviews['alpha_event_id'].apply(lambda x: data_init.alpha_event_dictonary[x])
     alpha_reviews['canonical_team1_id'] = data_init.alpha_reviews['team1_id'].apply(lambda x: data_init.alpha_team_dictonary[x])
     alpha_reviews['canonical_team2_id'] = data_init.alpha_reviews['team2_id'].apply(lambda x: data_init.alpha_team_dictonary[x])
     assert len(alpha_reviews) == 323
@@ -124,6 +128,10 @@ def test_mapping_beta_fixtures_to_c_ID_using_beta_event_dictionary(data_init):
 
 @pytest.mark.usefixtures("data_init")
 def test_mapping_beta_teams_fixtures_to_c_ID_using_beta_team_dictionary(data_init):
+    c_map = data_init.create_canonical_ID_map('event')
+    beta_list = c_map.beta_event_id.unique()
+    beta_fixtures = data_init.beta_fixtures[data_init.beta_fixtures['beta_event_id'].isin(beta_list)]
+    beta_fixtures['canonical_event_id'] = beta_fixtures['beta_event_id'].apply(lambda x: data_init.beta_event_dictonary[x])
     beta_fixtures['canonical_team1_id'] = data_init.beta_fixtures['team1_id'].apply(lambda x: data_init.beta_team_dictonary[x])
     beta_fixtures['canonical_team2_id'] = data_init.beta_fixtures['team2_id'].apply(lambda x: data_init.beta_team_dictonary[x])
     assert len(beta_fixtures) == 325

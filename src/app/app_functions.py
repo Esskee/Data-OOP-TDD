@@ -15,7 +15,7 @@ class file_handling():
         self.beta_fixtures = self.open_file_to_df('toy_data/beta_fixtures.csv')
         self.beta_market = self.open_file_to_df('toy_data/beta_market.csv')
 
-        self.alpha_event_dictonary =
+        #self.alpha_event_dictonary =
 
     #importing local csv files into memory
     def open_file_to_df(self, file_name):
